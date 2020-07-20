@@ -285,7 +285,7 @@ namespace Geoxpress.Controllers
             }
             if (tipo =="RIPL")
             {
-                using (StreamWriter fichero = new StreamWriter(ruta, true))
+                using (StreamWriter fichero = new StreamWriter(ruta, true ))
                 {
                     fichero.WriteLine(linea);
                 }
