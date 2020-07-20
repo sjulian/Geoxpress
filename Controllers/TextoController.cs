@@ -133,12 +133,7 @@ namespace Geoxpress.Controllers
                 {
 
                     string linea = leer.ReadLine();
-                    string a = linea.Substring(12, 6).Trim();
-                    if (linea.Substring(12, 6).Trim() == "")
-                    {
-                        a = "xd"; ;
-                    }
-                    else { a = "no"; }
+
 
                     if (linea.Substring(1484, 1) == "S")
                     {
@@ -186,6 +181,25 @@ namespace Geoxpress.Controllers
                 }
 
             }
+
+        }
+        public static void RIPLEY(string archivo, string nombre_base)
+        {
+            string [] nombre =
+            {  
+                "files/" + nombre_base + "_001.txt","files/" + nombre_base + "_002.txt","files/" + nombre_base + "_003.txt","files/" + nombre_base + "_004.txt"
+            };
+
+            using (StreamReader leer = new StreamReader(archivo))
+            {
+
+
+                while (!leer.EndOfStream)
+                {
+                    string linea = leer.ReadLine();
+                }
+            }
+
 
         }
 
@@ -249,5 +263,7 @@ namespace Geoxpress.Controllers
 
 
         }
+
+
     }
 }
