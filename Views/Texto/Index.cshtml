@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    var myArray = (string[])ViewData["Nombre"];
+}
+
+@ViewData["tam"]
+
+<ul>
+    @foreach (string role in myArray)
+    {
+        <li>@role</li>
+    }
+</ul>
