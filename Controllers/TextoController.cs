@@ -197,7 +197,30 @@ namespace Geoxpress.Controllers
                 while (!leer.EndOfStream)
                 {
                     string linea = leer.ReadLine();
+
+                    if (linea.Substring(9, 3) == "001")
+                    {
+                        crear_texto(linea, nombre[0],0, "RIPL");
+
+                    }
+                    if (linea.Substring(9, 3) == "002")
+                    {
+                        crear_texto(linea, nombre[1],0, "RIPL");
+
+                    }
+                    if (linea.Substring(9, 3) == "003")
+                    {
+
+                        crear_texto(linea, nombre[2],0, "RIPL");
+                    }
+                    if (linea.Substring(9, 3) == "004")
+                    {
+
+                        crear_texto(linea, nombre[3],0, "RIPL");
+                    }
+
                 }
+
             }
 
 
@@ -259,6 +282,13 @@ namespace Geoxpress.Controllers
 
                 }
 
+            }
+            if (tipo =="RIPL")
+            {
+                using (StreamWriter fichero = new StreamWriter(ruta, true))
+                {
+                    fichero.WriteLine(linea);
+                }
             }
 
 
