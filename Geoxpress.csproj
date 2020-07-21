@@ -166,7 +166,7 @@
     <Content Include="Views\Texto\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\upload\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

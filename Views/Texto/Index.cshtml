@@ -1,14 +1,13 @@
 ﻿
-@{
-    ViewBag.Title = "Index";
-    var myArray = (string[])ViewData["Nombre"];
+
+
+@using (Html.BeginForm("Upload", "Texto", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <select name="banco">
+        <option value="1">Bvva</option>
+        <option value="2">Interbank</option>
+        <option value="3">Ripley</option>
+    </select>
+    <input type="file" name="file" />
+    <input type="submit" name="Submit" id="Submit" value="Upload" />
 }
-
-@ViewData["tam"]
-
-<ul>
-    @foreach (string role in myArray)
-    {
-        <li>@role</li>
-    }
-</ul>

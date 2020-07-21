@@ -13,23 +13,14 @@ namespace Geoxpress.Controllers
         // GET: Texto
         public ActionResult Index()
         {
-            string linea = "41408982****4938    CARLOS MARTIN RODRIGUEZ YUCRA                        NA NO APLICA                                         MZ K2   LT 5    CRUCE CON PASAJE PAZ SOLDURBLAS MALVINAS                       CAYMA                         AREQUIPA                      AREQUIPA                      PERU                                    040103CALS N                                               K2 LT 5                                  URBLAS MALVINAS                       CAYMA                         AREQUIPA                      AREQUIPA                      PERU                                    04010300199350020046          0000          00000540349022000000000000000000L41845182   2211879918-04-201800110220145002363419200048    0220         S11 2T 180418200048  N180418200048               1";
-            int[,] separacion = new int[2, 2]
-            {
-                {0,20 },{20,53}
-            };
-            //crear_texto(linea, "E:\\Visual\\prueba\\test.txt", 1);
-            //BBVA("E:\\Visual\\prueba\\2-URBANO-O-180418_OT.TXT");
-            INTERBANK("E:\\Visual\\prueba\\D003302705190102_PM.TXT", "D003302705190102_PM");
-            ViewData["Nombre"] = Tseparacion(linea, separacion);
-            ViewData["tam"] = linea.Substring(801, 1);
+
             return View();
         }
 
-        public static void BBVA(string archivo)
+        public static void BBVA(string archivo,string ruta)
         {
-            string ruta = "E:\\Visual\\prueba\\";
-            string[] nombre = { ruta + "files/paperless.txt", ruta + "files/fuvex.txt", ruta + "files/diarios.txt", ruta + "files/tr.txt", ruta + "files/biometrico.txt", ruta + "files/fuvexe.txt" };
+            
+            string[] nombre = { ruta + "/files/paperless.txt", ruta + "/files/fuvex.txt", ruta + "/files/diarios.txt", ruta + "/files/tr.txt", ruta + "/files/biometrico.txt", ruta + "/files/fuvexe.txt" };
 
             string[] paperless = { "0408", "0785" };
             string[] fuvex = { "0781", "0831", "0896" };
@@ -99,13 +90,13 @@ namespace Geoxpress.Controllers
 
         }
 
-        public static void INTERBANK(string archivo, string nombre_base)
+        public static void INTERBANK(string archivo, string nombre_base, string ruta)
         {
-            string ruta = "E:\\Visual\\prueba\\";
+            
 
-            string[] nombre = {ruta +"files/"+nombre_base+"_W1.txt",ruta +"files/" + nombre_base + "_13.txt",ruta +"files/" + nombre_base + "_TV.txt",ruta +"files/" + nombre_base + "_TR.txt",
-                                ruta +"files/" + nombre_base + "_otros.txt",ruta +"files/" + nombre_base + "_GF.txt",ruta +"files/" + nombre_base + "_RY.txt",ruta +"files/" + nombre_base + "_01.txt",
-                                ruta +"files/" + nombre_base + "_800080.txt",ruta +"files/" + nombre_base + "_TJ.txt" };
+            string[] nombre = {ruta +"/files/"+nombre_base+"_W1.txt",ruta +"/files/" + nombre_base + "_13.txt",ruta +"/files/" + nombre_base + "_TV.txt",ruta +"/files/" + nombre_base + "_TR.txt",
+                                ruta +"/files/" + nombre_base + "_otros.txt",ruta +"/files/" + nombre_base + "_GF.txt",ruta +"/files/" + nombre_base + "_RY.txt",ruta +"/files/" + nombre_base + "_01.txt",
+                                ruta +"/files/" + nombre_base + "_800080.txt",ruta +"/files/" + nombre_base + "_TJ.txt" };
 
             int[,] separacion = {
                                     {0,3},{3,6},{9,3},{12,6},{18,16},{34,1},{35,16},{51,17},{68,1},{69,30},{99,30},{129,30},{159,30},{189,1},{190,12},{202,8},{210,1},{211,120},{331,55},{386,10},{396,6},{402,30},
@@ -174,8 +165,8 @@ namespace Geoxpress.Controllers
                     }
                     else
                     {
-                        crear_texto(linea, nombre[4], (contador), "INTE");
                     }
+                        crear_texto(linea, nombre[4], (contador), "INTE");
 
                     contador++;
                 }
@@ -183,11 +174,12 @@ namespace Geoxpress.Controllers
             }
 
         }
-        public static void RIPLEY(string archivo, string nombre_base)
+
+        public static void RIPLEY(string archivo, string nombre_base, string ruta)
         {
             string [] nombre =
             {  
-                "files/" + nombre_base + "_001.txt","files/" + nombre_base + "_002.txt","files/" + nombre_base + "_003.txt","files/" + nombre_base + "_004.txt"
+                ruta + "/files/" + nombre_base + "_001.txt",ruta + "/files/" + nombre_base + "_002.txt",ruta + "/files/" + nombre_base + "_003.txt",ruta + "/files/" + nombre_base + "_004.txt"
             };
 
             using (StreamReader leer = new StreamReader(archivo))
@@ -226,6 +218,35 @@ namespace Geoxpress.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase file, FormCollection formCollection)
+        {
+            string _banco = formCollection["banco"];
+
+            if (file != null && file.ContentLength > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var path = Path.Combine(Server.MapPath("~/upload"), fileName);
+                var nombre = Path.GetFileNameWithoutExtension(file.FileName);
+                var ruta = Server.MapPath("~/upload");
+                file.SaveAs(path);
+
+                if(_banco == "1")
+                {
+                    BBVA(path,ruta);
+                }
+                if (_banco =="2")
+                {
+                    INTERBANK(path,nombre,ruta);
+                }
+                if (_banco == "3")
+                {
+                    RIPLEY(path,nombre,ruta);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
         public string[] Tseparacion(string linea, int[,] separacion)
         {
             int cantidad = separacion.GetLength(0);
