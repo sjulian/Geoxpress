@@ -24,9 +24,10 @@ namespace Geoxpress.Controllers
             return View();
         }
 
-        public static void Excel(List<Object[]> excel,string nombre)
+        public static void Excel(List<Object[]> excel,string nombre,int banco)
         {
-            if(excel.Count > 1) { 
+            if(excel.Count > 1) {
+
 
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (ExcelPackage excelPackage = new ExcelPackage())
@@ -37,7 +38,17 @@ namespace Geoxpress.Controllers
                     excelPackage.Workbook.Properties.Subject = "data";
                     excelPackage.Workbook.Properties.Created = DateTime.Now;
 
-                     ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+                    ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+
+                    if (banco == 1)
+                    {
+                        excel.Insert(0,new Object[]{ "Número de Tarjeta", "Nombre del Cliente titular de la tarjeta", "Tipo de vía dirección Básica", "Nombre de Vía dirección Básica", "Numero de dirección Básica", "Otros Datos: INTERIOR DIRECCION BASICA", "Referencia Básica", "Tipo de zona dirección básica", "Nombre de zona de la dirección básica", "Código postal dirección básica", "Descripción del distrito dirección básica", "Descripción de provincia dirección básica", "Descripción de Departamento dirección básica", "Descripción país de dirección básica", "Ubigeo de la dirección Básica", "Tipo de vía dirección Alterna", "Nombre de Vía dirección Alterna", "Numero de dirección Alterna", "Otros Datos: INTERIOR DIRECCION ALTERNA", "Referencia Alterna", "Tipo de zona dirección alterna", "Nombre de zona de la dirección alterna", "Código postal dirección básica", "Descripción del distrito dirección Alterna", "Descripción de provincia dirección Alterna", "Descripción de Departamento dirección Alterna", "Descripción país de dirección Alterna", "Ubigeo de la dirección Alterna", "Prefijo del teléfono 1", "Número de Teléfono 1", "Extensión teléfono 1", "Prefijo teléfono 2", "Número de Teléfono 2", "Extensión teléfono 2", "Prefijo teléfono 3", "Número de Teléfono 3", "Extensión teléfono 3", "Prefijo teléfono 4", "Número de Teléfono 4", "Extensión teléfono 4", "Prefijo teléfono 5", "Número de Teléfono 5", "Extensión teléfono 5", "Tipo de Documento", "Numero de documento", "Código de cliente", "Fecha de Proceso", "Numero de Contrato", "Código de Referencia", "Código de Oficina Destino", "Código de Oficina Gestora", "Número de Incluso Valija", "Indicador de Masivo", "Código de tipo de tarjeta", "Indicador de tipo de solicitud", "Indicador de Tipo de Participe", "INDICADOR VALOR TARJETA", "CODIGO BARRAS", "Otros Datos: Indicador tipo de Seguimiento", "Otros Datos: Indicador Biométrico", "Código Barra número contrato", "Agrupamiento", "Código de segmento del cliente"});
+                    }
+                    else if (banco == 2)
+                    {
+                        excel.Insert(0, new Object[] { "INSTITUCION EMISORA", "CODIGO DEL BIN", "TIPO DE EMISION", "CAMPAÑA DE EMISION DE TARJETA", "NUMERO DE CUENTA", "TIPO DE TARJETA", "NUMERO TARJETA", "CODIGO SEGUIMIENTO DE TARJETA", "TIPO DE SERVICIO", "TARJETAHABIENTE - NOMBRE EN EL PLASTICO", "TITULAR DE LA CUENTA - NOMBRE", "TITULAR DE LA CUENTA - APELLIDO PATERNO", "TITULAR DE LA CUENTA - APELLIDO MATERNO", "TIPO DE DOCUMENTO DE IDENTIDAD DEL TITULAR", "NUMERO DEL DOCUMENTO DE IDENTIDAD - TITULAR", "FECHA DE EMISION DE LA TARJETA", "INDICADOR DE ENTREGA DE TARJETA", "DOMICILIO DEL TITULAR - DIRECCION", "DOMICILIO DEL TITULAR - REFERENCIA", "DOMICILIO DEL TITULAR - CODIGO POSTAL", "DOMICILIO DEL TITULAR - CODIGO UBIGEO", "DOMICILIO DEL TITULAR - DEPARTAMENTO", "DOMICILIO DEL TITULAR - PROVINCIA", "DOMICILIO DEL TITULAR - DISTRITO", "DOMICILIO DEL TITULAR - TELEFONO", "TRABAJO DEL TITULAR - DIRECCION", "TRABAJO DEL TITULAR - REFERENCIA", "TRABAJO DEL TITULAR - CODIGO POSTAL", "TRABAJO DEL TITULAR - CODIGO UBIGEO", "TRABAJO DEL TITULAR - DEPARTAMENTO", "TRABAJO DEL TITULAR - PROVINCIA", "TRABAJO DEL TITULAR - DISTRITO", "TRABAJO DEL TITULAR - TELEFONO", "LUGAR DE ENTREGA OPCIONAL - DIRECCION", "LUGAR DE ENTREGA OPCIONAL - REFERENCIA", "LUGAR DE ENTREGA OPCIONAL - CODIGO POSTAL", "LUGAR DE ENTREGA OPCIONAL - CODIGO UBIGEO", "LUGAR DE ENTREGA OPCIONAL - DEPARTAMENTO", "LUGAR DE ENTREGA OPCIONAL - PROVINCIA", "LUGAR DE ENTREGA OPCIONAL - DISTRITO", "LUGAR DE ENTREGA OPCIONAL - TELEFONO", "NOMBRE DE MANDATARIO 1", "TIPO DE DOCUMENTO DE IDENTIDAD DEL MANDATARIO 1", "NUMERO DEL DOCUMENTO DE IDENTIDAD - MANDATARIO 1", "TELEFONO DEL MANDATARIO 1", "NOMBRE DE MANDATARIO 2", "TIPO DE DOCUMENTO DE IDENTIDAD DEL MANDATARIO 2", "NUMERO DEL DOCUMENTO DE IDENTIDAD - MANDATARIO 2", "TELEFONO DEL MANDATARIO 2", "NOMBRE DE EMPRESA", "TIPO DE DESTINO", "CODIGO DE SUCURSAL", "CODIGO DE AGENCIA", "NUMERO DE ACUSE", "CODIGO DE BOLSA DE SEGURIDAD ", "CODIGO DE BOLSA DE TRANSPORTE ", "REQUIERE RECIBO", "INDICADOR DE PACK", "CODIGO ZIP", "FECHA PROCESO EMISOR", "CODIGO RELACIONADOR DE EMPAQUE", "GRUPO DE AFINIDAD", "CANAL DE VENTA", "INDICADOR PARA COURIER", "TIPO DE GESTION DE DISTRIBUCION", "INFORMACION ADICIONAL PARA LA DISTRIBUCION 1", "INFORMACION ADICIONAL PARA LA DISTRIBUCION 2", "INDICADOR ACTIVIDAD", "CODIGO DE PROMOCION", "INDICADOR DE BIOMETRIA", "INDICADOR DE DOCUMENTACION DIGITAL ", "RESERVADO" });
+                    }
+
 
                     worksheet.Cells["A1"].LoadFromArrays(excel);
                     //Save your file
@@ -138,12 +149,12 @@ namespace Geoxpress.Controllers
                 }
             }
 
-            Excel(Extr, "tr");
-            Excel(Expaperless, "papperles");
-            Excel(Exfuvex, "fuvex");
-            Excel(Exdiarios, "diarios");
-            Excel(Exbiometrico, "biometrico");
-            Excel(Exfuvexe, "fuvexe");
+            Excel(Extr, "tr",1);
+            Excel(Expaperless, "papperles",1);
+            Excel(Exfuvex, "fuvex",1);
+            Excel(Exdiarios, "diarios",1);
+            Excel(Exbiometrico, "biometrico",1);
+            Excel(Exfuvexe, "fuvexe",1);
         }
 
         public static void INTERBANK(string archivo, string nombre_base, string ruta)
@@ -172,6 +183,19 @@ namespace Geoxpress.Controllers
 
             int contador = 1;
 
+            var ExW1 = new List<object[]>();
+            var Ex13 = new List<object[]>();
+            var ExTV = new List<object[]>();
+            var ExTR = new List<object[]>();
+            var ExGF = new List<object[]>();
+            var ExRY = new List<object[]>();
+            var Ex01 = new List<object[]>();
+            var ExOtros = new List<object[]>();
+            var Ex800080 = new List<object[]>();
+            var ExTJ = new List<object[]>();
+
+            string[] dat;
+
             using (StreamReader leer = new StreamReader(archivo))
             {
 
@@ -184,51 +208,81 @@ namespace Geoxpress.Controllers
 
                     if (linea.Substring(1484, 1) == "S")
                     {
+                        dat = Tseparacion(linea, separacion);
+                        ExW1.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[0], (contador), "INTE");
                     }
                     else if (linea.Substring(1484, 1) == "N" && linea.Substring(12, 6) == "000001" && linea.Substring(9, 3).Contains(tabla[3, 0]))
                     {
+                        dat = Tseparacion(linea, separacion);
+                        Ex13.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[1], (contador), "INTE");
                     }
                     else if (linea.Substring(1484, 1) == "N" && linea.Substring(12, 6).Trim() == "" && linea.Substring(9, 3).Trim().Contains(tabla[3, 0]))
                     {
+                        dat = Tseparacion(linea, separacion);
+                        ExTV.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[2], (contador), "INTE");
                     }
                     else if (linea.Substring(1484, 1) == "N" && linea.Substring(12, 6).Trim() == "" && linea.Substring(9, 3).Trim().Contains(tabla[4, 0]))
                     {
+                        dat = Tseparacion(linea, separacion);
+                        ExTR.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[3], (contador), "INTE");
                     }
                     else if (linea.Substring(1484, 1) == "N" && linea.Substring(12, 6).Trim() == "" && linea.Substring(9, 3).Trim().Contains(tabla[5, 0]) && linea.Substring(3, 6) == "377753")
                     {
+                        dat = Tseparacion(linea, separacion);
+                        ExRY.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[6], (contador), "INTE");
                     }
                     else if (linea.Substring(1484, 1) == "N" && linea.Substring(12, 6).Trim() == "" && linea.Substring(9, 3).Trim().Contains(tabla[5, 0]) && linea.Substring(3, 6) == "456814")
                     {
+                        dat = Tseparacion(linea, separacion);
+                        Ex01.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[7], (contador), "INTE");
                     }
                     else if (linea.Substring(1484, 1) == "N" && linea.Substring(12, 6).Trim() == "" && linea.Substring(9, 3).Trim().Contains(tabla[2, 0]) && linea.Substring(3, 6) == "800080")
                     {
+                        dat = Tseparacion(linea, separacion);
+                        Ex800080.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[8], (contador), "INTE");
                     }
                     else if (linea.Substring(1484, 1) == "N" && linea.Substring(12, 6).Trim() == "" && linea.Substring(9, 3).Trim().Contains(tabla[5, 0]))
                     {
+                        dat = Tseparacion(linea, separacion);
+                        ExGF.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[5], (contador), "INTE");
                     }
                     else if (linea.Substring(1484, 1).Trim() == "" && linea.Substring(3, 3) == "700" && linea.Substring(34, 1) == "3" && linea.Substring(68, 1) == "P")
                     {
 
+                        dat = Tseparacion(linea, separacion);
+                        ExTJ.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[9], (contador), "INTE");
                     }
                     else
                     {
-                    }
+                        dat = Tseparacion(linea, separacion);
+                        ExOtros.Add(new Object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62], dat[63], dat[64], dat[65], dat[66], dat[67], dat[68], dat[69], dat[70], dat[71] });
                         crear_texto(linea, nombre[4], (contador), "INTE");
+                    }
+
 
                     contador++;
                 }
 
             }
-
+            Excel(ExW1, "W1",2);
+            Excel(Ex13, "13",2);
+            Excel(ExTV, "TV",2);
+            Excel(ExTR, "TR",2);
+            Excel(ExGF, "GF",2);
+            Excel(ExRY, "RY",2);
+            Excel(Ex01, "01",2);
+            Excel(ExOtros, "Otros",2);
+            Excel(Ex800080, "800080",2);
+            Excel(ExTJ, "TJ",2);
         }
 
         public static void RIPLEY(string archivo, string nombre_base, string ruta)
