@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
-
+using OfficeOpenXml;
+using System.Collections;
 namespace Geoxpress.Controllers
 {
     public class TextoController : Controller
@@ -17,9 +18,37 @@ namespace Geoxpress.Controllers
             return View();
         }
 
-        public static void BBVA(string archivo,string ruta)
+        public ActionResult TExcel() {
+
+
+            return View();
+        }
+
+        public static void Excel(List<Object[]> excel,string nombre)
         {
-            
+            if(excel.Count > 1) { 
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage excelPackage = new ExcelPackage())
+                {
+                    //Set some properties of the Excel document
+                    excelPackage.Workbook.Properties.Author = "Geo";
+                    excelPackage.Workbook.Properties.Title = "data";
+                    excelPackage.Workbook.Properties.Subject = "data";
+                    excelPackage.Workbook.Properties.Created = DateTime.Now;
+
+                     ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+
+                    worksheet.Cells["A1"].LoadFromArrays(excel);
+                    //Save your file
+                    FileInfo fi = new FileInfo(@"C:\Users\SERGIO\Desktop\dbf\excel\"+nombre+".xlsx");
+                    excelPackage.SaveAs(fi);
+                }
+            }
+        }
+        public static void BBVA(string archivo, string ruta)
+        {
+
             string[] nombre = { ruta + "/files/paperless.txt", ruta + "/files/fuvex.txt", ruta + "/files/diarios.txt", ruta + "/files/tr.txt", ruta + "/files/biometrico.txt", ruta + "/files/fuvexe.txt" };
 
             string[] paperless = { "0408", "0785" };
@@ -34,9 +63,19 @@ namespace Geoxpress.Controllers
             {804,3},{807,4},{811,1},{812,1},{813,1},{814,12},{826,2},{828,1},{829,27},{856,1},{857,4}
             };
 
+            var Expaperless = new List<object[]>();
+            var Exfuvex = new List<object[]>();
+            var Exdiarios = new List<object[]>();
+            var Extr = new List<object[]>();
+            var Exbiometrico = new List<object[]>();
+            var Exfuvexe = new List<object[]>();
+            string[] dat;
+
+
             using (StreamReader leer = new StreamReader(archivo))
             {
                 int contador = 1;
+
 
                 while (!leer.EndOfStream)
                 {
@@ -44,9 +83,10 @@ namespace Geoxpress.Controllers
 
                     if ((contador != 1))
                     {
-                        if (linea.Substring(801, 1) == "3")
+                        if (linea.Substring(separacion[54, 0], separacion[54, 1]) == "3")
                         {
-
+                            dat = Tseparacion(linea, separacion);
+                            Extr.Add(new object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62] });
                             crear_texto(linea, nombre[3], (contador), "BBVA");
 
                         }
@@ -54,6 +94,8 @@ namespace Geoxpress.Controllers
                             (linea.Substring(separacion[55, 0], separacion[55, 1]) == "T" || linea.Substring(separacion[54, 0], separacion[54, 1]) == "D") &&
                             (linea.Substring(separacion[61, 0], separacion[55, 1]) == "0" || linea.Substring(separacion[61, 0], separacion[54, 1]) == "1"))
                         {
+                            dat = Tseparacion(linea, separacion);
+                            Expaperless.Add(new object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62] });
                             crear_texto(linea, nombre[0], (contador), "BBVA");
                         }
 
@@ -61,23 +103,31 @@ namespace Geoxpress.Controllers
                                                     (linea.Substring(separacion[55, 0], separacion[55, 1]) == "T" || linea.Substring(separacion[54, 0], separacion[54, 1]) == "D") &&
                                                     (linea.Substring(separacion[61, 0], separacion[55, 1]) == "0" || linea.Substring(separacion[61, 0], separacion[54, 1]) == "1"))
                         {
+                            dat = Tseparacion(linea, separacion);
+                            Exfuvex.Add(new object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62] });
                             crear_texto(linea, nombre[1], (contador), "BBVA");
                         }
 
                         else if (linea.Substring(separacion[47, 0], 8) == "00110504" && linea.Substring(separacion[54, 0], separacion[54, 1]) == "1" &&
                                  linea.Substring(separacion[55, 0], separacion[55, 1]) == "T")
                         {
+                            dat = Tseparacion(linea, separacion);
+                            Exfuvexe.Add(new object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62] });
                             crear_texto(linea, nombre[5], (contador), "BBVA");
                         }
 
                         else if (biometrico.Contains(linea.Substring(768, 4)) && linea.Substring(separacion[54, 0], separacion[54, 1]) == "1" &&
                                  linea.Substring(separacion[55, 0], separacion[55, 1]) == "T")
                         {
+                            dat = Tseparacion(linea, separacion);
+                            Exbiometrico.Add(new object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62] });
                             crear_texto(linea, nombre[4], (contador), "BBVA");
                         }
 
                         else
                         {
+                            dat = Tseparacion(linea, separacion);
+                            Exdiarios.Add(new object[] { dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6], dat[7], dat[8], dat[9], dat[10], dat[11], dat[12], dat[13], dat[14], dat[15], dat[16], dat[17], dat[18], dat[19], dat[20], dat[21], dat[22], dat[23], dat[24], dat[25], dat[26], dat[27], dat[28], dat[29], dat[30], dat[31], dat[32], dat[33], dat[34], dat[35], dat[36], dat[37], dat[38], dat[39], dat[40], dat[41], dat[42], dat[43], dat[44], dat[45], dat[46], dat[47], dat[48], dat[49], dat[50], dat[51], dat[52], dat[53], dat[54], dat[55], dat[56], dat[57], dat[58], dat[59], dat[60], dat[61], dat[62] });
                             crear_texto(linea, nombre[2], (contador), "BBVA");
                         }
 
@@ -88,6 +138,12 @@ namespace Geoxpress.Controllers
                 }
             }
 
+            Excel(Extr, "tr");
+            Excel(Expaperless, "papperles");
+            Excel(Exfuvex, "fuvex");
+            Excel(Exdiarios, "diarios");
+            Excel(Exbiometrico, "biometrico");
+            Excel(Exfuvexe, "fuvexe");
         }
 
         public static void INTERBANK(string archivo, string nombre_base, string ruta)
@@ -247,7 +303,7 @@ namespace Geoxpress.Controllers
 
             return RedirectToAction("Index");
         }
-        public string[] Tseparacion(string linea, int[,] separacion)
+        public static string[] Tseparacion(string linea, int[,] separacion)
         {
             int cantidad = separacion.GetLength(0);
 
